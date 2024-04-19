@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import { useSelector } from "react-redux";
-import MAP_STYLE from "@/lib/MapStyles.json";
+import MAP_STYLE from "@/lib/styles.json";
 import Markers from "./markers";
 import { Skeleton } from "@/components/ui/skeleton";
 

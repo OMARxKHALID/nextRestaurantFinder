@@ -32,8 +32,7 @@
     "react-redux": "^9.1.0",
     "redux": "^5.0.1",
     "tailwind-merge": "^2.2.2",
-    "tailwindcss-animate": "^1.0.7",
-    "use-places-autocomplete": "^4.0.1"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
