@@ -15,8 +15,13 @@ export default function Navbar() {
         className="flex items-center font-semibold text-xl space-x-6"
         passHref
       >
-        <Image src="/logo.png" alt="logo" width={60} height={60} />
-        <h1 className="cursor-pointer">Favourite</h1>
+        <Image
+          src="/logo.png"
+          alt="logo"
+          width={60}
+          height={60}
+          priority={true}
+        />
       </Link>
       <div className="hidden md:flex w-full max-w-sm items-center space-x-2">
         <div className="relative w-full">

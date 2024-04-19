@@ -59,13 +59,12 @@ function BusinessItem({ business, showDir = false }) {
       <CardContent className="grid gap-1">
         {business.photos && business.photos.length > 0 ? (
           <div className="relative mt-3 overflow-hidden rounded-t-lg h-[100px]">
-<Image
-  src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${business.photos[0]?.photo_reference}&key=${GOOGLE_API_KEY}`}
-  alt={business.name}
-  width={100} 
-  height={100} 
-/>
-
+            <Image
+              src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${business.photos[0]?.photo_reference}&key=${GOOGLE_API_KEY}`}
+              alt={business.name}
+              width={200}
+              height={150}
+            />
           </div>
         ) : (
           <div className="relative flex mt-3 items-center justify-center rounded-t-lg h-[100px] bg-gray-600 text-white text-lg">

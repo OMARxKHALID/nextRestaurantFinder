@@ -2,13 +2,10 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import Navbar from "@/components/nav/navbar";
-import { Toaster } from "react-hot-toast";
 import NextTopLoader from "nextjs-toploader";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import Provider from "@/lib/providers/client-provider";
-import { Provider as ReduxProvider } from "react-redux";
-import store from "@/redux/store";
 import ReduxWrapper from "@/lib/providers/redux-provider";
 
 const inter = Space_Grotesk({ subsets: ["latin"] });
@@ -40,7 +37,6 @@ export default async function RootLayout({ children }) {
               <div className="w-full flex-1 ">{children}</div>
             </ReduxWrapper>{" "}
           </Provider>
-          <Toaster position="top-center" reverseOrder={false} />
         </ThemeProvider>
       </body>
     </html>

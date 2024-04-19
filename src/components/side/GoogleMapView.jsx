@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import { useSelector } from "react-redux";
 import MAP_STYLE from "@/lib/MapStyles.json";
 import Markers from "./markers";
@@ -21,29 +21,9 @@ function GoogleMapView({ businessList }) {
     }
   }, [map, selectedBusiness]);
 
-  const onLoad = useCallback(
-    (map) => {
-      const bounds = new window.google.maps.LatLngBounds(userLocation);
-      map.fitBounds(bounds);
-      setMap(map);
-    },
-    [userLocation]
-  );
+  const onLoad = useCallback((map) => setMap(map), []);
 
-  const onUnmount = useCallback(() => {
-    setMap(null);
-  }, []);
-
-  const containerStyle = {
-    width: "100%",
-    height: "500px",
-    borderRadius: "10px",
-  };
-
-  const mapOptions = {
-    styles: MAP_STYLE,
-    disableDefaultUI: true,
-  };
+  const onUnmount = useCallback(() => setMap(null), []);
 
   if (loadError) {
     return <div>Error loading Google Maps</div>;
@@ -54,14 +34,18 @@ function GoogleMapView({ businessList }) {
       {!isLoaded && <Skeleton className="h-[500px] w-[100%] rounded-xl" />}
       {isLoaded && (
         <GoogleMap
-          mapContainerStyle={containerStyle}
+          mapContainerStyle={{
+            width: "100%",
+            height: "500px",
+            borderRadius: "10px",
+          }}
           center={userLocation}
           zoom={13}
-          options={mapOptions}
+          options={{ styles: MAP_STYLE, disableDefaultUI: true }}
           onLoad={onLoad}
           onUnmount={onUnmount}
         >
-          <Marker
+          <MarkerF
             position={userLocation}
             icon={{
               url: "/user-location.png",

@@ -10,20 +10,6 @@ export async function GET(request) {
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
 
-  console.log(
-    BASE_URL +
-      "/textsearch/json?query=" +
-      category +
-      "&location=" +
-      lat +
-      "," +
-      lng +
-      "&radius=" +
-      radius +
-      "&key=" +
-      GOOGLE_API_KEY
-  );
-
   const res = await fetch(
     BASE_URL +
       "/textsearch/json?query=" +

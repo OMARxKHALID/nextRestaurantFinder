@@ -29,8 +29,12 @@ function BusinessList({ businessList, loading }) {
               </div>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          {businessList.length > 0 && (
+            <>
+              <CarouselPrevious />
+              <CarouselNext />
+            </>
+          )}
         </Carousel>
       ) : (
         <div className="flex overflow-scroll overflow-x-auto gap-2 scrollbar-hide">

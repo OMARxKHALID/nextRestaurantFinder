@@ -13,7 +13,7 @@ function CategoryList({ onCategoryChange }) {
         {categoryList.map((item, index) => (
           <div
             key={index}
-            className={`flex flex-col justify-center items-center p-2 m-2 rounded-lg cursor-pointer text-[13px] ${
+            className={`flex flex-col justify-center items-center p-3 m-2 rounded-lg cursor-pointer text-[12px] ${
               selectedCategory === index
                 ? "border border-purple-400"
                 : "border border-dark"
