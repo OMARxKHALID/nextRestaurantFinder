@@ -42,7 +42,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (userLocation) {
+    if (userLocation && category) {
       setLoading(true);
       getGooglePlace(category, radius, userLocation.lat, userLocation.lng)
         .then((resp) => {
