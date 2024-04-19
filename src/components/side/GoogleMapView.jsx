@@ -5,12 +5,15 @@ import MAP_STYLE from "@/lib/MapStyles.json";
 import Markers from "./markers";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const PLACES = ["places"];
+
 function GoogleMapView({ businessList }) {
   const userLocation = useSelector((state) => state.userLocation);
   const selectedBusiness = useSelector((state) => state.selectedBusiness);
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+    libraries: PLACES,
   });
 
   const [map, setMap] = useState(null);

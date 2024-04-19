@@ -35,7 +35,7 @@ export default async function RootLayout({ children }) {
             <ReduxWrapper>
               <Navbar />
               <div className="w-full flex-1 ">{children}</div>
-            </ReduxWrapper>{" "}
+            </ReduxWrapper>
           </Provider>
         </ThemeProvider>
       </body>

@@ -1,0 +1,95 @@
+"use client";
+
+import Link from "next/link";
+import Profile from "./profile";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import LoginForm from "./login";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { Autocomplete, useLoadScript } from "@react-google-maps/api";
+
+const PLACES = ["places"];
+
+export default function Navbar() {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+    libraries: PLACES,
+  });
+
+  const [searchResult, setSearchResult] = useState("Result: none");
+
+  function onLoad(autocomplete) {
+    setSearchResult(autocomplete);
+  }
+  function onPlaceChanged() {
+    if (searchResult != null) {
+      const place = searchResult.getPlace();
+      const name = place.name;
+      const status = place.business_status;
+      const formattedAddress = place.formatted_address;
+      // console.log(place);
+      console.log(`Name: ${name}`);
+      console.log(`Business Status: ${status}`);
+      console.log(`Formatted Address: ${formattedAddress}`);
+    } else {
+      alert("Autocomplete not loaded yet");
+    }
+  }
+
+  return (
+    <nav className="w-full flex items-center justify-between">
+      <Link
+        href="/"
+        className="flex items-center font-semibold text-xl space-x-6"
+        passHref
+      >
+        <Image src="/logo.png" alt="logo" width={60} height={60} />
+        <h1 className="cursor-pointer">Favourite</h1>
+      </Link>
+      {isLoaded && (
+        <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
+          <div className="hidden md:flex w-full max-w-sm items-center space-x-2">
+            <div className="relative w-full">
+              <Input placeholder="Search" type="text" />
+              <div className="absolute inset-y-0 right-0 flex items-center px-2.5 cursor-pointer">
+                <SearchIcon className="h-5 w-5 opacity-60" />
+              </div>
+            </div>
+          </div>
+        </Autocomplete>
+      )}
+      <div>
+        <RenderProfile />
+      </div>
+    </nav>
+  );
+}
+
+function RenderProfile() {
+  const { data: session, status } = useSession();
+
+  if (typeof window !== "undefined" && status === "loading") return null;
+
+  return session?.user ? <Profile user={session.user} /> : <LoginForm />;
+}
+
+function SearchIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
+  );
+}
