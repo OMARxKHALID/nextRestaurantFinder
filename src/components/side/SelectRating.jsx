@@ -29,9 +29,9 @@ function SelectRating({ onRatingChange }) {
               className="appearance-none w-0 h-0 opacity-0 pointer-events-none absolute"
             />
             {maxRating >= index + 1 ? (
-              <StarFilledIcon className="w-8 h-8 text-yellow-500" />
+              <StarFilledIcon className="w-7 h-7 lg:w-8 lg:h-8 text-yellow-500" />
             ) : (
-              <StarIcon className="w-8 h-8" />
+              <StarIcon className="w-7 h-7 lg:w-8 lg:h-8 " />
             )}
             <span className="sr-only">{index + 1}</span>
           </label>

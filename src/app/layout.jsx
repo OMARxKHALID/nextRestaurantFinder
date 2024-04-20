@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import Provider from "@/lib/providers/client-provider";
 import ReduxWrapper from "@/lib/providers/redux-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Space_Grotesk({ subsets: ["latin"] });
 export const metadata = {
@@ -35,6 +36,7 @@ export default async function RootLayout({ children }) {
             <ReduxWrapper>
               <Navbar />
               <div className="w-full flex-1 ">{children}</div>
+              <Toaster />
             </ReduxWrapper>
           </Provider>
         </ThemeProvider>

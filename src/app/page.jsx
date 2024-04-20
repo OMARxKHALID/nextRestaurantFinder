@@ -10,7 +10,8 @@ import { getGooglePlace } from "@/lib/GetGooglePlace";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import SelectRating from "@/components/side/SelectRating";
-import { setSelectedBusiness } from "@/redux/BusinessSlice";
+import RangeSelect from "@/components/side/RangeSelect";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Home() {
   const [category, setCategory] = useState();
@@ -25,10 +26,13 @@ export default function Home() {
 
   const { status } = useSession();
   const router = useRouter();
+  const { toast } = useToast();
 
-  if (status === "unauthenticated") {
-    router.push("api/auth/signin/google");
-  }
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("api/auth/signin/google");
+    }
+  }, [status, router]);
 
   useEffect(() => {
     getUserLocation();
@@ -56,18 +60,33 @@ export default function Home() {
         })
         .catch((error) => {
           console.error("Error fetching Google Place data:", error);
+          toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "Error fetching Google Place data.",
+            duration: 2000,
+          });
         })
         .finally(() => setLoading(false));
     }
-  }, [userLocation, category, radius]);
+  }, [userLocation, category, radius, toast]);
 
   const onRatingChange = (rating) => {
-    if (rating === 0) {
-      setBusinessList(businessListOrg);
+    if (businessList.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "First select the desired category.",
+        duration: 2000,
+      });
       return;
+    } else {
+      const filteredList =
+        rating === 0
+          ? businessListOrg
+          : businessListOrg.filter((item) => item.rating >= rating);
+      setBusinessList(filteredList);
     }
-    const result = businessListOrg.filter((item) => item.rating >= rating);
-    setBusinessList(result);
   };
 
   return (
@@ -75,6 +94,7 @@ export default function Home() {
       <div className="p-3">
         <CategoryList onCategoryChange={(value) => setCategory(value)} />
         <SelectRating onRatingChange={(value) => onRatingChange(value)} />
+        {/* <RangeSelect onRadiusChange={(value) => setRadius(value)} /> */}
       </div>
       <div className="col-span-4 md:col-span-3">
         <div className="p-6">
