@@ -68,17 +68,11 @@ export default function Navbar() {
             height={60}
             priority={true}
           />
+          <h1 className="hidden md:flex">RESTAURANT FINDER</h1>
         </Link>
+
         {isLoaded && (
           <div className="hidden sm:flex w-full max-w-sm items-center space-x-2">
-            {/* <div className="pac-container pac-logo">
-              <div className="pac-item">
-                <span className="pac-icon pac-icon-marker"></span>
-                <span className="pac-item-query">
-                  <span>France</span>
-                </span>
-              </div>
-            </div> */}
             <div className="relative w-full">
               <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                 <Input
