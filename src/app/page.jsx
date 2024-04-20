@@ -9,11 +9,15 @@ import { setUserLocation } from "@/redux/LocationSlice";
 import { getGooglePlace } from "@/lib/GetGooglePlace";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import SelectRating from "@/components/side/SelectRating";
+import { setSelectedBusiness } from "@/redux/BusinessSlice";
 
 export default function Home() {
   const [category, setCategory] = useState();
   const [radius, setRadius] = useState(2500);
   const [businessList, setBusinessList] = useState([]);
+  const [businessListOrg, setBusinessListOrg] = useState([]);
+
   const [loading, setLoading] = useState(false);
 
   const userLocation = useSelector((state) => state.userLocation);
@@ -46,7 +50,9 @@ export default function Home() {
       setLoading(true);
       getGooglePlace(category, radius, userLocation.lat, userLocation.lng)
         .then((resp) => {
-          setBusinessList(resp.data.product.results);
+          const businesses = resp.data.product.results;
+          setBusinessList(businesses);
+          setBusinessListOrg(businesses);
         })
         .catch((error) => {
           console.error("Error fetching Google Place data:", error);
@@ -55,10 +61,20 @@ export default function Home() {
     }
   }, [userLocation, category, radius]);
 
+  const onRatingChange = (rating) => {
+    if (rating === 0) {
+      setBusinessList(businessListOrg);
+      return;
+    }
+    const result = businessListOrg.filter((item) => item.rating >= rating);
+    setBusinessList(result);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4">
       <div className="p-3">
         <CategoryList onCategoryChange={(value) => setCategory(value)} />
+        <SelectRating onRatingChange={(value) => onRatingChange(value)} />
       </div>
       <div className="col-span-4 md:col-span-3">
         <div className="p-6">

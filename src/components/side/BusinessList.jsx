@@ -38,7 +38,7 @@ function BusinessList({ businessList, loading }) {
         </Carousel>
       ) : (
         <div className="flex overflow-scroll overflow-x-auto gap-2 scrollbar-hide">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
             <SkeletonLoading key={index} />
           ))}
         </div>

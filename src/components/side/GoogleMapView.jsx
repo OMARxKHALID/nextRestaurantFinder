@@ -25,8 +25,14 @@ function GoogleMapView({ businessList }) {
   }, [map, selectedBusiness]);
 
   const onLoad = useCallback((map) => setMap(map), []);
-
   const onUnmount = useCallback(() => setMap(null), []);
+
+  const handleUserInfo = () => {
+    console.log("handleUserInfo");
+    if (map) {
+      map.panTo(userLocation);
+    }
+  };
 
   if (loadError) {
     return <div>Error loading Google Maps</div>;
@@ -54,6 +60,7 @@ function GoogleMapView({ businessList }) {
               url: "/user-location.png",
               scaledSize: { width: 50, height: 50 },
             }}
+            onClick={handleUserInfo}
           />
           {businessList.slice(0, 8).map((business, index) => (
             <Markers business={business} key={index} />

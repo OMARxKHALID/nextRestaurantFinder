@@ -1,0 +1,52 @@
+import { StarIcon, StarFilledIcon } from "@radix-ui/react-icons";
+import React, { useState } from "react";
+
+function SelectRating({ onRatingChange }) {
+  const totalStars = 5;
+
+  const [selectedRating, setSelectedRating] = useState([]);
+
+  const toggleRating = (isChecked, value) => {
+    let updatedRating;
+    if (isChecked) {
+      updatedRating = Array.from({ length: value }, (_, i) => i + 1);
+    } else {
+      updatedRating = [];
+    }
+    console.log("🚀 ~ toggleRating ~ updatedRating:", updatedRating);
+
+    setSelectedRating(updatedRating);
+    onRatingChange(updatedRating);
+  };
+
+  return (
+    <div className="mx-4 mt-6 mb-2">
+      <h1 className="font-bold mb-4">Select Rating</h1>
+      <div className="flex items-center gap-0.5 relative">
+        {Array.from({ length: totalStars }, (_, index) => (
+          <label
+            key={index}
+            className="cursor-pointer rounded-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+            htmlFor={`rating-${index}`}
+          >
+            <input
+              id={`rating-${index}`}
+              type="checkbox"
+              onChange={(e) => toggleRating(e.target.checked, index + 1)}
+              checked={selectedRating.includes(index + 1)}
+              className="appearance-none w-0 h-0 opacity-0 pointer-events-none absolute"
+            />
+            {selectedRating.includes(index + 1) ? (
+              <StarFilledIcon className="w-5 h-5 text-yellow-500" />
+            ) : (
+              <StarIcon className="w-5 h-5" />
+            )}
+            <span className="sr-only">{index + 1}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default SelectRating;
