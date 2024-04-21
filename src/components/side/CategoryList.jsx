@@ -8,7 +8,7 @@ function CategoryList({ onCategoryChange }) {
 
   return (
     <div>
-      <h1 className="font-bold m-4">Select Food Type</h1>
+      <h1 className="font-bold m-4 text-lg">Select Food Type</h1>
       <div className="border border-dark rounded-md p-3 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
         {categoryList.map((item, index) => (
           <div

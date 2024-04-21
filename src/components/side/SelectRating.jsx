@@ -13,12 +13,12 @@ function SelectRating({ onRatingChange }) {
 
   return (
     <div className="mx-4 mt-6 mb-2">
-      <h1 className="font-bold mb-4">Select Rating</h1>
-      <div className="flex items-center gap-1.5 relative">
+      <h1 className="font-bold mb-4 text-lg">Select Rating</h1>
+      <div className="flex items-center gap-2 relative">
         {Array.from({ length: totalStars }, (_, index) => (
           <label
             key={index}
-            className="cursor-pointer rounded-md p-2 dark:hover:bg-gray-800"
+            className="cursor-pointer rounded-md p-1 dark:hover:bg-gray-800 transition-colors duration-200"
             htmlFor={`rating-${index}`}
           >
             <input
@@ -29,9 +29,9 @@ function SelectRating({ onRatingChange }) {
               className="appearance-none w-0 h-0 opacity-0 pointer-events-none absolute"
             />
             {maxRating >= index + 1 ? (
-              <StarFilledIcon className="w-7 h-7 lg:w-8 lg:h-8 text-yellow-500" />
+              <StarFilledIcon className="w-5 h-5 lg:w-8 lg:h-8 text-yellow-500" />
             ) : (
-              <StarIcon className="w-7 h-7 lg:w-8 lg:h-8 " />
+              <StarIcon className="w-5 h-5 lg:w-8 lg:h-8" />
             )}
             <span className="sr-only">{index + 1}</span>
           </label>

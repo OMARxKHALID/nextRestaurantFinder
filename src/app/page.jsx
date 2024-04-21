@@ -10,7 +10,6 @@ import { getGooglePlace } from "@/lib/GetGooglePlace";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import SelectRating from "@/components/side/SelectRating";
-import RangeSelect from "@/components/side/RangeSelect";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function Home() {
@@ -90,19 +89,20 @@ export default function Home() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4">
-      <div className="p-3">
-        <CategoryList onCategoryChange={(value) => setCategory(value)} />
-        <SelectRating onRatingChange={(value) => onRatingChange(value)} />
-        {/* <RangeSelect onRadiusChange={(value) => setRadius(value)} /> */}
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="md:col-span-1">
+          <CategoryList onCategoryChange={(value) => setCategory(value)} />
+          <SelectRating onRatingChange={(value) => onRatingChange(value)} />
+        </div>
+        <div className="md:col-span-3">
+          <div className="py-2 h-full">
+            <GoogleMapView businessList={businessList} />
+          </div>
+        </div>
       </div>
-      <div className="col-span-4 md:col-span-3">
-        <div className="p-6">
-          <GoogleMapView businessList={businessList} />
-        </div>
-        <div className="px-6 mt-4">
-          <BusinessList loading={loading} businessList={businessList} />
-        </div>
+      <div className="mt-8">
+        <BusinessList loading={loading} businessList={businessList} />
       </div>
     </div>
   );
