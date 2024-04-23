@@ -36,7 +36,6 @@ export default function Navbar() {
           lat: location.lat(),
           lng: location.lng(),
         };
-        console.log("🚀 ~ onPlaceChanged ~ latLng:", latLng);
         dispatch(setUserLocation(latLng));
       }
       setSearchValue("");

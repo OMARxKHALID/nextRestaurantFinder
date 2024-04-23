@@ -10,6 +10,10 @@ export async function GET(request) {
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
 
+  if (!GOOGLE_API_KEY || !category || !radius || !lat || !lng) {
+    return NextResponse.error("Required parameters missing", { status: 400 });
+  }
+
   const res = await fetch(
     BASE_URL +
       "/textsearch/json?query=" +
@@ -28,7 +32,10 @@ export async function GET(request) {
       },
     }
   );
-  const product = await res.json();
 
-  return NextResponse.json({ product });
+  const product = await res.json();
+  const response = NextResponse.json({ product });
+  response.headers.set("Cache-Control", "public, max-age=3600");
+
+  return response;
 }

@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUserLocation } from "@/redux/LocationSlice";
 import { getGooglePlace } from "@/lib/GetGooglePlace";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import SelectRating from "@/components/side/SelectRating";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -24,36 +23,53 @@ export default function Home() {
   const dispatch = useDispatch();
 
   const { status } = useSession();
-  const router = useRouter();
   const { toast } = useToast();
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("api/auth/signin/google");
-    }
-  }, [status, router]);
 
   useEffect(() => {
     getUserLocation();
   }, []);
 
+  // fetch user location from the browser's geolocation API
   const getUserLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      dispatch(
-        setUserLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        })
-      );
-    });
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        dispatch(
+          setUserLocation({
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          })
+        );
+      },
+      (error) => {
+        console.error("Error getting user location:", error);
+        toast({
+          variant: "destructive",
+          title: "Error getting user location.",
+          description: `${error.message}`,
+          duration: 2000,
+        });
+      }
+    );
   };
 
+  // fetch data from Google Place API based on the selected category and user location
   useEffect(() => {
     if (userLocation && category) {
       setLoading(true);
       getGooglePlace(category, radius, userLocation.lat, userLocation.lng)
         .then((resp) => {
+          console.log(resp);
+          if (status === "unauthenticated") {
+            toast({
+              variant: "destructive",
+              title: "Uh oh! Something went wrong.",
+              description: "First login to see the restaurants.",
+              duration: 2000,
+            });
+            return;
+          }
           const businesses = resp.data.product.results;
+          console.log("businesses:", businesses);
           setBusinessList(businesses);
           setBusinessListOrg(businesses);
         })
@@ -61,17 +77,18 @@ export default function Home() {
           console.error("Error fetching Google Place data:", error);
           toast({
             variant: "destructive",
-            title: "Uh oh! Something went wrong.",
-            description: "Error fetching Google Place data.",
+            title: "Error fetching Google Place data.",
+            description: `${error.message}`,
             duration: 2000,
           });
         })
         .finally(() => setLoading(false));
     }
-  }, [userLocation, category, radius, toast]);
+  }, [userLocation, category, radius, toast, status]);
 
+  // on rating change, filter the business list based on the rating
   const onRatingChange = (rating) => {
-    if (businessList.length === 0) {
+    if (businessListOrg.length === 0) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
@@ -89,7 +106,7 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto p-2">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="md:col-span-1">
           <CategoryList onCategoryChange={(value) => setCategory(value)} />
